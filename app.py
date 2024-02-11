@@ -4,7 +4,6 @@ import plotly.express as px
 from pyclugen import clugen
 import numpy as np
 import random
-import math
 
 
 external_stylesheets = [dbc.themes.FLATLY]
@@ -20,9 +19,8 @@ app.layout = dbc.Container([
                 dbc.Label('Number of points'),
                 dbc.Input(id='num_points', debounce=True, value=500, type='number', min=1, max=50000, step=1),
                 # dbc.Label('Direction'),
-                dbc.Label('Angle dispersion (degrees)'),
-                #dbc.Input(id='angle_disp', debounce=True, value=0.1, type='number', min=0.0, max=np.pi, step=0.001),
-                dcc.Slider(id="angle_disp", min=0, max=360, value=5),
+                dbc.Label('Angle dispersion (radians)'),
+                dbc.Input(id='angle_disp', debounce=True, value=0.1, type='number', min=0.0, max=np.pi, step=0.001),
                 # dbc.Label('Cluster separation'),
                 dbc.Label('Line length'),
                 dbc.Input(id='llength', debounce=True, value=6.0, type='number', min=0.0, max=np.iinfo(np.int32).max),
@@ -62,7 +60,7 @@ app.layout = dbc.Container([
 def update_plot(n_clicks, num_clusters, num_points, angle_disp, llength, llength_disp, lateral_disp, auto_seed, seed):
     if auto_seed:
         seed = random.randrange(np.iinfo(np.int32).max)
-    out2d = clugen(2, num_clusters, num_points, [1, 0], math.radians(angle_disp), [50, 10], llength, llength_disp, lateral_disp, rng=seed)
+    out2d = clugen(2, num_clusters, num_points, [1, 0], angle_disp, [50, 10], llength, llength_disp, lateral_disp, rng=seed)
     fig = px.scatter(x=out2d.points[:, 0], y=out2d.points[:, 1], color=out2d.clusters.astype(str))
     return [fig, seed]
 
