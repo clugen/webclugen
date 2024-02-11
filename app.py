@@ -10,8 +10,8 @@ app = Dash(__name__, external_stylesheets=external_stylesheets)
 
 app.layout = dbc.Container([
     html.H1(children='WebClugen', style={'textAlign':'center'}),
-    dbc.CardGroup([
-        dbc.Card(dbc.CardBody([
+    dbc.Row([
+        dbc.Col(dbc.Container([
             dbc.Label('Number of clusters'),
             dbc.Input(id='num_clusters', debounce=True, value=4, type='number', min=1, max=30, step=1),
             dbc.Label('Number of points'),
@@ -25,10 +25,11 @@ app.layout = dbc.Container([
             dbc.Label('Seed'),
             dbc.Input(id='seed', debounce=True, value=0, type='number', min=0, max=np.iinfo(np.int32).max, step=1),
             dbc.Button("Generate", id="gen-button", color="primary", className="me-1")
-        ])),
-        dbc.Card(dbc.CardBody([
+    ]), width=3),
+        dbc.Col(
             dcc.Graph(id='plot', figure={}),
-        ])),
+            width=9
+        ),
     ]),
 ])
 
