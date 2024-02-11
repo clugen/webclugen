@@ -17,11 +17,15 @@ app.layout = dbc.Container([
             dbc.Label('Number of points'),
             dbc.Input(id='num_points', debounce=True, value=500, type='number', min=1, max=50000, step=1),
             # dbc.Label('Direction'),
-            # dbc.Label('Angle dispersion'),
+            dbc.Label('Angle dispersion (radians)'),
+            dbc.Input(id='angle_disp', debounce=True, value=0.1, type='number', min=0.0, max=np.pi, step=0.001),
             # dbc.Label('Cluster separation'),
-            # dbc.Label('Line length'),
-            # dbc.Label('Line length dispersion'),
-            # dbc.Label('Lateral dispersion'),
+            dbc.Label('Line length'),
+            dbc.Input(id='llength', debounce=True, value=6.0, type='number', min=0.0, max=np.iinfo(np.int32).max),
+            dbc.Label('Line length dispersion'),
+            dbc.Input(id='llength_disp', debounce=True, value=1.0, type='number', min=0, max=np.iinfo(np.int32).max),
+            dbc.Label('Lateral dispersion'),
+            dbc.Input(id='lateral_disp', debounce=True, value=1.0, type='number', min=0, max=np.iinfo(np.int32).max),
             dbc.Label('Seed'),
             dbc.Input(id='seed', debounce=True, value=0, type='number', min=0, max=np.iinfo(np.int32).max, step=1),
             dbc.Button("Generate", id="gen-button", color="primary", className="me-1")
@@ -39,10 +43,14 @@ app.layout = dbc.Container([
     Input('gen-button', 'n_clicks'),
     State('num_clusters', 'value'),
     State('num_points', 'value'),
+    State('angle_disp', 'value'),
+    State('llength', 'value'),
+    State('llength_disp', 'value'),
+    State('lateral_disp', 'value'),
     State('seed', 'value')
 )
-def update_graph(n_clicks, num_clusters, num_points, seed):
-    out2d = clugen(2, num_clusters, num_points, [1, 0], 0.4, [50, 10], 20, 1, 2, rng=seed)
+def update_graph(n_clicks, num_clusters, num_points, angle_disp, llength, llength_disp, lateral_disp, seed):
+    out2d = clugen(2, num_clusters, num_points, [1, 0], angle_disp, [50, 10], llength, llength_disp, lateral_disp, rng=seed)
     fig = px.scatter(x=out2d.points[:, 0], y=out2d.points[:, 1], color=out2d.clusters.astype(str))
     return fig
 
