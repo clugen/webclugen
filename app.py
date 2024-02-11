@@ -10,20 +10,26 @@ app = Dash(__name__, external_stylesheets=external_stylesheets)
 
 app.layout = dbc.Container([
     html.H1(children='WebClugen', style={'textAlign':'center'}),
-    dbc.Label('Number of clusters'),
-    dbc.Input(id='num_clusters', debounce=True, value=4, type='number', min=1, max=30, step=1),
-    dbc.Label('Number of points'),
-    dbc.Input(id='num_points', debounce=True, value=500, type='number', min=1, max=50000, step=1),
-    # dbc.Label('Direction'),
-    # dbc.Label('Angle dispersion'),
-    # dbc.Label('Cluster separation'),
-    # dbc.Label('Line length'),
-    # dbc.Label('Line length dispersion'),
-    # dbc.Label('Lateral dispersion'),
-    dbc.Label('Seed'),
-    dbc.Input(id='seed', debounce=True, value=0, type='number', min=0, max=np.iinfo(np.int32).max, step=1),
-    dbc.Button("Generate", id="gen-button", color="primary", className="me-1"),
-    dcc.Graph(id='plot', figure={})
+    dbc.CardGroup([
+        dbc.Card(dbc.CardBody([
+            dbc.Label('Number of clusters'),
+            dbc.Input(id='num_clusters', debounce=True, value=4, type='number', min=1, max=30, step=1),
+            dbc.Label('Number of points'),
+            dbc.Input(id='num_points', debounce=True, value=500, type='number', min=1, max=50000, step=1),
+            # dbc.Label('Direction'),
+            # dbc.Label('Angle dispersion'),
+            # dbc.Label('Cluster separation'),
+            # dbc.Label('Line length'),
+            # dbc.Label('Line length dispersion'),
+            # dbc.Label('Lateral dispersion'),
+            dbc.Label('Seed'),
+            dbc.Input(id='seed', debounce=True, value=0, type='number', min=0, max=np.iinfo(np.int32).max, step=1),
+            dbc.Button("Generate", id="gen-button", color="primary", className="me-1")
+        ])),
+        dbc.Card(dbc.CardBody([
+            dcc.Graph(id='plot', figure={}),
+        ])),
+    ]),
 ])
 
 # Add controls to build the interaction
